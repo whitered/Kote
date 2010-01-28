@@ -5,7 +5,7 @@ package ru.whitered.mvc
 	/**
 	 * @author whitered
 	 */
-	public class Facade 
+	public class Facade extends Notifier
 	{
 		private const mediatorsMap:Dictionary = new Dictionary();
 		private const controllers:Dictionary = new Dictionary();
@@ -14,6 +14,12 @@ package ru.whitered.mvc
 		private var notifiers:Dictionary = new Dictionary();
 
 		
+		
+		public function Facade() 
+		{
+			signalNotification.addListener(handleNotification);
+		}
+
 		
 		
 		//----------------------------------------------------------------------
@@ -139,7 +145,6 @@ package ru.whitered.mvc
 		//----------------------------------------------------------------------
 		// notifications
 		//----------------------------------------------------------------------
-		
 		
 		private function registerNotifier(notifier:Notifier):Boolean 
 		{
