@@ -7,8 +7,11 @@ package ru.whitered.mvc
 	 */
 	public class Mediator extends Notifier
 	{
-		public const signalSubscribe:Signal = new Signal();
-		public const signalUnsubscribe:Signal = new Signal();
+		public const signalSubscribed:Signal = new Signal();
+		public const signalUnsubscribed:Signal = new Signal();
+		
+		public const signalAdded:Signal = new Signal();
+		public const signalRemoved:Signal = new Signal();
 		
 		private const handlers:Dictionary = new Dictionary();
 		
@@ -18,7 +21,7 @@ package ru.whitered.mvc
 		{
 			if(handlers[notificationType] != null) return false;
 			handlers[notificationType] = handler;
-			signalSubscribe.dispatch(this, notificationType);
+			signalSubscribed.dispatch(this, notificationType);
 			return true;
 		}
 		
@@ -28,7 +31,7 @@ package ru.whitered.mvc
 		{
 			if(handlers[notificationType] == null) return false;
 			delete handlers[notificationType];
-			signalUnsubscribe.dispatch(this, notificationType);
+			signalUnsubscribed.dispatch(this, notificationType);
 			return true;
 		}
 		

@@ -50,10 +50,12 @@ package ru.whitered.mvc
 				subscribeMediator(mediator, subscriptions[i]);
 			}
 			
-			mediator.signalSubscribe.addListener(subscribeMediator);
-			mediator.signalUnsubscribe.addListener(unsubscribeMediator);
+			mediator.signalSubscribed.addListener(subscribeMediator);
+			mediator.signalUnsubscribed.addListener(unsubscribeMediator);
+			
+			mediator.signalAdded.dispatch(this);
 		}
-		
+
 		
 		
 		public function removeMediator(mediator:Mediator):void
@@ -68,8 +70,10 @@ package ru.whitered.mvc
 				unsubscribeMediator(mediator, subscriptions[i]);
 			}
 			
-			mediator.signalUnsubscribe.removeListener(unsubscribeMediator);
-			mediator.signalSubscribe.removeListener(subscribeMediator);
+			mediator.signalUnsubscribed.removeListener(unsubscribeMediator);
+			mediator.signalSubscribed.removeListener(subscribeMediator);
+			
+			mediator.signalRemoved.dispatch(this);
 		}
 
 		
