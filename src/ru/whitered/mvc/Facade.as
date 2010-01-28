@@ -149,7 +149,7 @@ package ru.whitered.mvc
 		
 		private function handleNotification(notificationType:NotificationType, params:Array):void 
 		{
-			const notification:Notification = new Notification(notificationType, params);
+			const notification:Notification = new Notification(this, notificationType, params);
 			
 			// if there is a processing notification already:
 			if(notificationsQueue)

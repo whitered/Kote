@@ -4,17 +4,26 @@ package ru.whitered.mvc
 	/**
 	 * @author whitered
 	 */
-	public class Notification 
+	public final class Notification 
 	{
+		private var _facade:Facade;
 		private var notificationType:NotificationType;
 		private var params:Array;
 
 		
 		
-		public function Notification(notificationType:NotificationType, params:Array) 
+		public function Notification(facade:Facade, notificationType:NotificationType, params:Array) 
 		{
+			this._facade = facade;
 			this.notificationType = notificationType;
 			this.params = params;
+		}
+		
+		
+		
+		public function get facade():Facade
+		{
+			return _facade;
 		}
 		
 		
