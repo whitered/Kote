@@ -34,6 +34,13 @@ package ru.whitered.mvc
 		
 		
 		
+		public function hasProxy(proxy:Proxy):Boolean
+		{
+			return notifiers[proxy] != null;
+		}
+		
+		
+		
 		//----------------------------------------------------------------------
 		// mediators
 		//----------------------------------------------------------------------
@@ -74,6 +81,13 @@ package ru.whitered.mvc
 			mediator.signalSubscribed.removeListener(subscribeMediator);
 			
 			mediator.signalRemoved.dispatch(this);
+		}
+		
+		
+		
+		public function hasMediator(mediator:Mediator):Boolean
+		{
+			return notifiers[mediator] != null;
 		}
 
 		
