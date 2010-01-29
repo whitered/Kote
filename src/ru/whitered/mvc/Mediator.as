@@ -51,8 +51,7 @@ package ru.whitered.mvc
 		
 		public function handleNotification(notification:Notification):void 
 		{
-			const handler:Function = handlers[notification.type];
-			if(handler) handler.apply(this, notification.parameters);
+			if(handlers[notification.type] != null) handlers[notification.type].apply(this, notification.parameters);
 		}
 	}
 }
