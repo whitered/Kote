@@ -66,7 +66,7 @@ package ru.whitered.kote
 			mediator.onSubscribe.addListener(subscribeMediator);
 			mediator.onUnsubscribe.addListener(unsubscribeMediator);
 			
-			mediator.onAdd.dispatch(this);
+			mediator.onAdd.dispatch(mediator, this);
 		}
 
 		
@@ -86,7 +86,7 @@ package ru.whitered.kote
 			mediator.onUnsubscribe.removeListener(unsubscribeMediator);
 			mediator.onSubscribe.removeListener(subscribeMediator);
 			
-			mediator.onRemove.dispatch(this);
+			mediator.onRemove.dispatch(mediator, this);
 		}
 		
 		
