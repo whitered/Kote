@@ -10,7 +10,7 @@ package ru.whitered.kote
 		/**
 		 * Signal <code>onSubscribe</code> is dispatched when the mediator is subscribed for a notification
 		 * 
-		 * Signal has arguments: 
+		 * <p>Signal has arguments:</p>
 		 * <ul>
 		 * <li><code>mediator:Mediator</code> - current mediator</li>
 		 * <li><code>notificationType:NotificationType</code> - notification for which the mediator was subscribed</li>
@@ -21,7 +21,7 @@ package ru.whitered.kote
 		/**
 		 * Signal <code>onUnsubscribe</code> is dispatched when the mediator is unsubscribed for a notification
 		 * 
-		 * Signal has arguments: 
+		 * <p>Signal has arguments:</p>
 		 * <ul>
 		 * <li><code>mediator:Mediator</code> - current mediator</li>
 		 * <li><code>notificationType:NotificationType</code> - notification from which the mediator was unsubscribed</li>
@@ -32,7 +32,7 @@ package ru.whitered.kote
 		/**
 		 * Signal <code>onAdd</code> is dispatched when the mediator is added to a Facade
 		 * 
-		 * Signal has arguments:
+		 * <p>Signal has arguments:</p>
 		 * <ul>
 		 * <li><code>facade:Facade</code> - facade that has added the mediator</li>
 		 * <li><code>mediator:Mediator</code> - current mediator</li>
@@ -59,15 +59,18 @@ package ru.whitered.kote
 		/**
 		 * Subscribes the mediator for specified notification type
 		 * 
+		 * <p>Handler method should accept the same parameters types 
+		 * as was specified on notification creation</p>
+		 * 
+		 * <p>If handler is not specified, notification still can be handled 
+		 * by the handleNotification() method</p>
+		 * 
 		 * @param notificationType
 		 * @param handler shortcut method that will be invoked on the notification
-		 * This method should accept the same parameters types as was specified on notification sending
-		 * 
-		 * <p>If handler is not specified, notification still can be handled by the handleNotification() method</p>
 		 * 
 		 * @return <code>true</code> if successfully subscribed; <code>false</code> if there is a subscription for given notification type already
 		 * 
-		 * @see handleNotification() 
+		 * @see #handleNotification() 
 		 */
 		public function subscribe(notificationType:NotificationType, handler:Function = null):Boolean
 		{
@@ -118,6 +121,10 @@ package ru.whitered.kote
 		 * notification object itself instead of its parameters</p>
 		 * 
 		 * <p>Don't forget to call <code>super.handleNotification(notification)</code> when overriding</p>
+		 * 
+		 * @param notification Received notification
+		 * 
+		 * @see Notification
 		 */
 		public function handleNotification(notification:Notification):void 
 		{
