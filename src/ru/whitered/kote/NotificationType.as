@@ -2,21 +2,39 @@ package ru.whitered.kote
 {
 
 	/**
-	 * @author whitered
+	 * NotificationType is used to define a single notification type
 	 */
 	public class NotificationType 
 	{
-		private var name:String;
+		private var _name:String;
 		
 		
 		
+		/**
+		 * Created a notification type
+		 * 
+		 * @param name Can be useful for debug
+		 */
 		public function NotificationType(name:String = null) 
 		{
-			this.name = name;
+			this._name = name;
 		}
 		
 		
 		
+		/**
+		 * Readable name specified on creation
+		 */
+		public function get name():String
+		{
+			return _name;
+		}
+		
+		
+		
+		/**
+		 * @return Name specified on creation or null
+		 */
 		public function toString():String {
 			return name || "[NotificationType]";
 		}
