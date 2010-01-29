@@ -56,7 +56,7 @@ package ru.whitered.mvc
 			if(!registerNotifier(mediator)) return;
 			
 			const subscriptions:Vector.<NotificationType> = mediator.listSubscriptions();
-			const subscriptionsLength:int = subscriptionsLength;
+			const subscriptionsLength:int = subscriptions.length;
 			
 			for (var i:int = 0; i < subscriptionsLength; i++)
 			{
@@ -100,7 +100,7 @@ package ru.whitered.mvc
 		
 		private function subscribeMediator(mediator:Mediator, notificationType:NotificationType):void 
 		{
-			mediatorsMap[notificationType] ||= new Vector.<Mediator>;
+			mediatorsMap[notificationType] ||= new Vector.<Mediator>();
 			mediatorsMap[notificationType].push(mediator);
 		}
 
