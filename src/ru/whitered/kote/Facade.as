@@ -20,7 +20,7 @@ package ru.whitered.kote
 		 */
 		public function Facade() 
 		{
-			signalNotification.addListener(handleNotification);
+			onNotification.addListener(handleNotification);
 		}
 
 		
@@ -206,7 +206,7 @@ package ru.whitered.kote
 		{
 			if(notifiers[notifier] != null) return false;
 			notifiers[notifier] = true;
-			notifier.signalNotification.addListener(handleNotification);
+			notifier.onNotification.addListener(handleNotification);
 			return true;
 		}
 
@@ -219,7 +219,7 @@ package ru.whitered.kote
 		{
 			if(notifiers[notifier] == null) return false;
 			delete notifiers[notifier];
-			notifier.signalNotification.removeListener(handleNotification);
+			notifier.onNotification.removeListener(handleNotification);
 			return true;
 		}
 

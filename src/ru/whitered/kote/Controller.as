@@ -3,7 +3,7 @@ package ru.whitered.kote
 	import flash.utils.Dictionary;
 
 	/**
-	 * @author whitered
+	 * @private
 	 */
 	internal final class Controller extends Notifier
 	{
@@ -78,9 +78,9 @@ package ru.whitered.kote
 			for (var i:int = 0;i < commandsLength; i++)
 			{
 				command = snapshot[i];
-				command.signalNotification.addListener(notificationListener);
+				command.onNotification.addListener(notificationListener);
 				result = command.execute(notification);
-				command.signalNotification.removeListener(notificationListener);
+				command.onNotification.removeListener(notificationListener);
 				if(!result) return false;
 			}
 			

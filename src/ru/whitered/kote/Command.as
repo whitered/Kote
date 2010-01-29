@@ -14,7 +14,7 @@ package ru.whitered.kote
 		 * Invokes when the command is executed
 		 * 
 		 * <p>Override this method if you need to operate the notification 
-		 * instance instead of its parameters. 
+		 * instance instead of its parameters or to abort the notification.
 		 * Be sure to call <code>super.execute(notification)</code> in the 
 		 * overrided method</p>  
 		 * 
