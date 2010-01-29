@@ -13,7 +13,7 @@ package ru.whitered.kote
 		public function dispatch(... args):void
 		{
 			if(!listeners) return;
-			const snapshot:Vector.<Function> = new Vector.<Function>().concat(listeners);
+			const snapshot:Vector.<Function> = listeners.concat();
 			const numListeners:int = snapshot.length;
 			
 			var i:int;
