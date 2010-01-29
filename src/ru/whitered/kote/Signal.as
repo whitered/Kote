@@ -2,7 +2,7 @@ package ru.whitered.kote
 {
 
 	/**
-	 * @author whitered
+	 * Signal presents a single event type
 	 */
 	public class Signal 
 	{
@@ -10,6 +10,9 @@ package ru.whitered.kote
 		
 		
 		
+		/**
+		 * Calls all registered listeners with given arguments
+		 */
 		public function dispatch(... args):void
 		{
 			if(!listeners) return;
@@ -35,6 +38,11 @@ package ru.whitered.kote
 
 		
 		
+		/**
+		 * Registers listener
+		 * 
+		 * @param listener
+		 */
 		public function addListener(listener:Function):void
 		{
 			if(listeners)
@@ -50,6 +58,11 @@ package ru.whitered.kote
 		
 		
 		
+		/**
+		 * Unregisters specified listener
+		 * 
+		 * @param listener
+		 */
 		public function removeListener(listener:Function):Boolean
 		{
 			if(!listeners) return false;
@@ -61,6 +74,9 @@ package ru.whitered.kote
 		
 		
 		
+		/**
+		 * Removes all the listeners
+		 */
 		public function removeAllListeners():void
 		{
 			listeners = null;
