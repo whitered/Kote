@@ -4,7 +4,7 @@ package ru.whitered.kote
 	/**
 	 * Notifier class used as a base for all classes that have to send notifications
 	 */
-	internal class Notifier 
+	public class Notifier 
 	{
 		/**
 		 * Signal that sends notification
