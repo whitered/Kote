@@ -17,17 +17,17 @@ package ru.whitered.mvc
 		
 		
 		
-		public function subscribe(notificationType:NotificationType, handler:Function):Boolean
+		public function subscribe(notificationType:NotificationType, handler:Function = null):Boolean
 		{
 			if(handlers[notificationType] != null) return false;
-			handlers[notificationType] = handler;
+			handlers[notificationType] = handler || true;
 			signalSubscribed.dispatch(this, notificationType);
 			return true;
 		}
 		
 		
 		
-		public function unsubscribe(notificationType:NotificationType, handler:Function):Boolean
+		public function unsubscribe(notificationType:NotificationType, handler:Function = null):Boolean
 		{
 			if(handlers[notificationType] == null) return false;
 			delete handlers[notificationType];
@@ -51,7 +51,7 @@ package ru.whitered.mvc
 		
 		public function handleNotification(notification:Notification):void 
 		{
-			if(handlers[notification.type] != null) handlers[notification.type].apply(this, notification.parameters);
+			if(handlers[notification.type] is Function) handlers[notification.type].apply(this, notification.parameters);
 		}
 	}
 }

@@ -108,8 +108,8 @@ package ru.whitered.mvc
 		
 		private function unsubscribeMediator(mediator:Mediator, notificationType:NotificationType):void 
 		{
+			if(mediatorsMap[notificationType] == null) return;
 			const subscribedMediators:Vector.<Mediator> = mediatorsMap[notificationType];
-			if(!subscribedMediators) return;
 			const index:int = subscribedMediators.indexOf(mediator);
 			if(index < 0) return;
 			subscribedMediators.splice(index, 1);
