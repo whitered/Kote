@@ -1,4 +1,4 @@
-package ru.whitered.mvc 
+package ru.whitered.kote 
 {
 
 	/**
