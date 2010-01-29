@@ -69,12 +69,15 @@ package ru.whitered.mvc
 		 */
 		public function execute(notification:Notification, notificationListener:Function):Boolean
 		{
-			const commandsLength:int = commands.length;
+			const snapshot:Vector.<Command> = commands.concat();
+			const commandsLength:int = snapshot.length;
+			
 			var command:Command;
 			var result:Boolean;
+			
 			for (var i:int = 0;i < commandsLength; i++)
 			{
-				command = commands[i];
+				command = snapshot[i];
 				command.signalNotification.addListener(notificationListener);
 				result = command.execute(notification);
 				command.signalNotification.removeListener(notificationListener);
