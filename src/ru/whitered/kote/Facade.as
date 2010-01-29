@@ -3,18 +3,21 @@ package ru.whitered.kote
 	import flash.utils.Dictionary;
 
 	/**
-	 * @author whitered
+	 * Facade manages mediators, proxies and commands. It is the central part of mvc framework
 	 */
 	public class Facade extends Notifier
 	{
 		private const mediatorsMap:Dictionary = new Dictionary();
 		private const controllers:Dictionary = new Dictionary();
-		
+
 		private var notificationsQueue:Vector.<Notification>;
 		private var notifiers:Dictionary = new Dictionary();
 
 		
 		
+		/**
+		 * Creates an instance of Facade
+		 */
 		public function Facade() 
 		{
 			signalNotification.addListener(handleNotification);
@@ -26,31 +29,52 @@ package ru.whitered.kote
 		// proxies
 		//----------------------------------------------------------------------
 		
+		/**
+		 * Registers proxy in the facade. Registered proxy can send notifications
+		 * 
+		 * @param proxy Proxy instance to register
+		 */
 		public function addProxy(proxy:Proxy):void
 		{
 			registerNotifier(proxy);
 		}
+
 		
 		
-		
+		/**
+		 * Unregisters proxy from the facade.
+		 * 
+		 * @param proxy Proxy to remove
+		 */
 		public function removeProxy(proxy:Proxy):void
 		{
 			unregisterNotifier(proxy);
 		}
+
 		
 		
-		
+		/**
+		 * Checks if the proxy is registered in facade
+		 * 
+		 * @param proxy
+		 */
 		public function hasProxy(proxy:Proxy):Boolean
 		{
 			return notifiers[proxy] != null;
 		}
-		
+
 		
 		
 		//----------------------------------------------------------------------
 		// mediators
 		//----------------------------------------------------------------------
 		
+		/**
+		 * Registers mediator in the proxy.
+		 * Registered mediator can send and subscribe for notifications
+		 * 
+		 * @param mediator
+		 */
 		public function addMediator(mediator:Mediator):void
 		{
 			if(!registerNotifier(mediator)) return;
@@ -58,7 +82,7 @@ package ru.whitered.kote
 			const subscriptions:Vector.<NotificationType> = mediator.listSubscriptions();
 			const subscriptionsLength:int = subscriptions.length;
 			
-			for (var i:int = 0; i < subscriptionsLength; i++)
+			for (var i:int = 0;i < subscriptionsLength;i++)
 			{
 				subscribeMediator(mediator, subscriptions[i]);
 			}
@@ -71,6 +95,11 @@ package ru.whitered.kote
 
 		
 		
+		/**
+		 * Removes mediator from the facade
+		 * 
+		 * @param mediator
+		 */
 		public function removeMediator(mediator:Mediator):void
 		{
 			if(!unregisterNotifier(mediator)) return;
@@ -88,9 +117,14 @@ package ru.whitered.kote
 			
 			mediator.onRemove.dispatch(mediator, this);
 		}
+
 		
 		
-		
+		/**
+		 * Checks if the mediator is already registered in facade
+		 * 
+		 * @param mediator
+		 */
 		public function hasMediator(mediator:Mediator):Boolean
 		{
 			return notifiers[mediator] != null;
@@ -98,6 +132,9 @@ package ru.whitered.kote
 
 		
 		
+		/**
+		 * @private
+		 */
 		private function subscribeMediator(mediator:Mediator, notificationType:NotificationType):void 
 		{
 			mediatorsMap[notificationType] ||= new Vector.<Mediator>();
@@ -106,6 +143,9 @@ package ru.whitered.kote
 
 		
 		
+		/**
+		 * @private
+		 */
 		private function unsubscribeMediator(mediator:Mediator, notificationType:NotificationType):void 
 		{
 			if(mediatorsMap[notificationType] == null) return;
@@ -115,13 +155,20 @@ package ru.whitered.kote
 			subscribedMediators.splice(index, 1);
 			if(subscribedMediators.length == 0) delete mediatorsMap[notificationType];
 		}
-		
+
 		
 		
 		//----------------------------------------------------------------------
 		// commands
 		//----------------------------------------------------------------------
 		
+		/**
+		 * Binds the command to the notification
+		 * 
+		 * @param notificationType Notification type 
+		 * @param command 
+		 * @param priority Priority of the command. Commands with a higher priority will be executed first
+		 */
 		public function addCommand(notificationType:NotificationType, command:Command, priority:int = 0):void
 		{
 			const controller:Controller = controllers[notificationType] ||= new Controller();
@@ -130,6 +177,12 @@ package ru.whitered.kote
 
 		
 		
+		/**
+		 * Unbinds the command from the notification
+		 * 
+		 * @param notificationType
+		 * @param command
+		 */
 		public function removeCommand(notificationType:NotificationType, command:Command):void
 		{
 			const controller:Controller = controllers[notificationType];
@@ -146,6 +199,9 @@ package ru.whitered.kote
 		// notifications
 		//----------------------------------------------------------------------
 		
+		/**
+		 * @private
+		 */
 		private function registerNotifier(notifier:Notifier):Boolean 
 		{
 			if(notifiers[notifier] != null) return false;
@@ -153,9 +209,12 @@ package ru.whitered.kote
 			notifier.signalNotification.addListener(handleNotification);
 			return true;
 		}
+
 		
 		
-		
+		/**
+		 * @private
+		 */
 		private function unregisterNotifier(notifier:Notifier):Boolean
 		{
 			if(notifiers[notifier] == null) return false;
@@ -166,6 +225,9 @@ package ru.whitered.kote
 
 		
 		
+		/**
+		 * @private
+		 */
 		private function handleNotification(notificationType:NotificationType, params:Array):void 
 		{
 			const notification:Notification = new Notification(this, notificationType, params);
@@ -190,6 +252,9 @@ package ru.whitered.kote
 
 		
 		
+		/**
+		 * @private
+		 */
 		private function processNotification(notification:Notification):void
 		{
 			const notificationType:NotificationType = notification.type;
