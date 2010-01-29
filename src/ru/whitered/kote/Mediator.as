@@ -27,7 +27,7 @@ package ru.whitered.kote
 		
 		
 		
-		public function unsubscribe(notificationType:NotificationType, handler:Function = null):Boolean
+		public function unsubscribe(notificationType:NotificationType):Boolean
 		{
 			if(handlers[notificationType] == null) return false;
 			delete handlers[notificationType];
