@@ -63,10 +63,10 @@ package ru.whitered.mvc
 				subscribeMediator(mediator, subscriptions[i]);
 			}
 			
-			mediator.signalSubscribed.addListener(subscribeMediator);
-			mediator.signalUnsubscribed.addListener(unsubscribeMediator);
+			mediator.onSubscribe.addListener(subscribeMediator);
+			mediator.onUnsubscribe.addListener(unsubscribeMediator);
 			
-			mediator.signalAdded.dispatch(this);
+			mediator.onAdd.dispatch(this);
 		}
 
 		
@@ -83,10 +83,10 @@ package ru.whitered.mvc
 				unsubscribeMediator(mediator, subscriptions[i]);
 			}
 			
-			mediator.signalUnsubscribed.removeListener(unsubscribeMediator);
-			mediator.signalSubscribed.removeListener(subscribeMediator);
+			mediator.onUnsubscribe.removeListener(unsubscribeMediator);
+			mediator.onSubscribe.removeListener(subscribeMediator);
 			
-			mediator.signalRemoved.dispatch(this);
+			mediator.onRemove.dispatch(this);
 		}
 		
 		
