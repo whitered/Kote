@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="Kote" default="swc" basedir=".">
+
+	<property environment="env."/>
+	<fail unless="env.FLEX_HOME" message="FLEX_HOME needs to be defined as an environment variable or in the Ant build." />
+	<property name="FLEX_HOME" value="${env.FLEX_HOME}" />
+
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="output.swc" value="${basedir}/bin/kote.swc" />
+	
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	
+	
+	
+	<target name="swc" depends="" description="Compile AS3 code into a SWC">
+		<echo>Using Flex SDK at: ${FLEX_HOME}</echo>
+
+		<compc output="${output.swc}">
+			<source-path path-element="${src.dir}"/>
+			<include-sources dir="${src.dir}" includes="**/*.as"/>
+		</compc>
+		
+	</target>
+	
+	
+</project>
+
