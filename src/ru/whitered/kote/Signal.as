@@ -6,30 +6,30 @@ package ru.whitered.kote
 	 */
 	public class Signal 
 	{
-		private var listeners:Vector.<Function>;
+		private var callbacks:Vector.<Function>;
 		
 		
 		
 		/**
-		 * Calls all registered listeners with given arguments
+		 * Calls all registered callbacks with given arguments
 		 */
 		public function dispatch(... args):void
 		{
-			if(!listeners) return;
-			const snapshot:Vector.<Function> = listeners.concat();
-			const numListeners:int = snapshot.length;
+			if(!callbacks) return;
+			const snapshot:Vector.<Function> = callbacks.concat();
+			const numCallbacks:int = snapshot.length;
 			
 			var i:int;
 			if(args.length == 0)
 			{
-				for (i = 0;i < numListeners;i++)
+				for (i = 0;i < numCallbacks;i++)
 				{
 					snapshot[i]();
 				}
 			}
 			else
 			{
-				for (i = 0;i < numListeners;i++)
+				for (i = 0;i < numCallbacks;i++)
 				{
 					snapshot[i].apply(null, args);
 				}
@@ -39,47 +39,47 @@ package ru.whitered.kote
 		
 		
 		/**
-		 * Registers listener
+		 * Registers callback
 		 * 
-		 * @param listener
+		 * @param callback
 		 */
-		public function addListener(listener:Function):void
+		public function addCallback(callback:Function):void
 		{
-			if(listeners)
+			if(callbacks)
 			{
-				if(listeners.indexOf(listener) >= 0) throw new Error("The listener is already registered");
-				listeners[listeners.length] = listener;
+				if(callbacks.indexOf(callback) >= 0) throw new Error("The listener is already registered");
+				callbacks[callbacks.length] = callback;
 			}
 			else
 			{
-				listeners = Vector.<Function>([listener]);
+				callbacks = Vector.<Function>([callback]);
 			}
 		}
 		
 		
 		
 		/**
-		 * Unregisters specified listener
+		 * Unregisters specified callback
 		 * 
-		 * @param listener
+		 * @param callback
 		 */
-		public function removeListener(listener:Function):Boolean
+		public function removeCallback(callback:Function):Boolean
 		{
-			if(!listeners) return false;
-			const index:int = listeners.indexOf(listener);
+			if(!callbacks) return false;
+			const index:int = callbacks.indexOf(callback);
 			if(index < 0) return false; 
-			listeners.splice(index, 1);
+			callbacks.splice(index, 1);
 			return true;
 		}
 		
 		
 		
 		/**
-		 * Removes all the listeners
+		 * Removes all the callbacks
 		 */
-		public function removeAllListeners():void
+		public function removeAllCallbacks():void
 		{
-			listeners = null;
+			callbacks = null;
 		}
 	}
 }

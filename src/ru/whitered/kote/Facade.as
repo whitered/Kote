@@ -20,7 +20,7 @@ package ru.whitered.kote
 		 */
 		public function Facade() 
 		{
-			onNotification.addListener(handleNotification);
+			onNotification.addCallback(handleNotification);
 		}
 
 		
@@ -87,8 +87,8 @@ package ru.whitered.kote
 				subscribeMediator(mediator, subscriptions[i]);
 			}
 			
-			mediator.onSubscribe.addListener(subscribeMediator);
-			mediator.onUnsubscribe.addListener(unsubscribeMediator);
+			mediator.onSubscribe.addCallback(subscribeMediator);
+			mediator.onUnsubscribe.addCallback(unsubscribeMediator);
 			
 			mediator.onAdd.dispatch(mediator, this);
 		}
@@ -112,8 +112,8 @@ package ru.whitered.kote
 				unsubscribeMediator(mediator, subscriptions[i]);
 			}
 			
-			mediator.onUnsubscribe.removeListener(unsubscribeMediator);
-			mediator.onSubscribe.removeListener(subscribeMediator);
+			mediator.onUnsubscribe.removeCallback(unsubscribeMediator);
+			mediator.onSubscribe.removeCallback(subscribeMediator);
 			
 			mediator.onRemove.dispatch(mediator, this);
 		}
@@ -206,7 +206,7 @@ package ru.whitered.kote
 		{
 			if(notifiers[notifier] != null) return false;
 			notifiers[notifier] = true;
-			notifier.onNotification.addListener(handleNotification);
+			notifier.onNotification.addCallback(handleNotification);
 			return true;
 		}
 
@@ -219,7 +219,7 @@ package ru.whitered.kote
 		{
 			if(notifiers[notifier] == null) return false;
 			delete notifiers[notifier];
-			notifier.onNotification.removeListener(handleNotification);
+			notifier.onNotification.removeCallback(handleNotification);
 			return true;
 		}
 
