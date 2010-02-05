@@ -10,7 +10,7 @@ package ru.whitered.kote
 		private const mediatorsMap:Dictionary = new Dictionary();
 		private const controllers:Dictionary = new Dictionary();
 
-		private var notificationsQueue:Vector.<Notification>;
+		private var notificationsQueue:Array;
 		private var notifiers:Dictionary = new Dictionary();
 
 		
@@ -79,7 +79,7 @@ package ru.whitered.kote
 		{
 			if(!registerNotifier(mediator)) return;
 			
-			const subscriptions:Vector.<NotificationType> = mediator.listSubscriptions();
+			const subscriptions:Array = mediator.listSubscriptions();
 			const subscriptionsLength:int = subscriptions.length;
 			
 			for (var i:int = 0;i < subscriptionsLength;i++)
@@ -104,7 +104,7 @@ package ru.whitered.kote
 		{
 			if(!unregisterNotifier(mediator)) return;
 			
-			const subscriptions:Vector.<NotificationType> = mediator.listSubscriptions();
+			const subscriptions:Array = mediator.listSubscriptions();
 			const subscriptionsLength:int = subscriptions.length;
 			
 			for (var i:int = 0;i < subscriptionsLength;i++)
@@ -137,7 +137,7 @@ package ru.whitered.kote
 		 */
 		private function subscribeMediator(mediator:Mediator, notificationType:NotificationType):void 
 		{
-			mediatorsMap[notificationType] ||= new Vector.<Mediator>();
+			mediatorsMap[notificationType] ||= [];
 			mediatorsMap[notificationType].push(mediator);
 		}
 
@@ -149,7 +149,7 @@ package ru.whitered.kote
 		private function unsubscribeMediator(mediator:Mediator, notificationType:NotificationType):void 
 		{
 			if(mediatorsMap[notificationType] == null) return;
-			const subscribedMediators:Vector.<Mediator> = mediatorsMap[notificationType];
+			const subscribedMediators:Array = mediatorsMap[notificationType];
 			const index:int = subscribedMediators.indexOf(mediator);
 			if(index < 0) return;
 			subscribedMediators.splice(index, 1);
@@ -239,7 +239,7 @@ package ru.whitered.kote
 				return;
 			}
 			
-			notificationsQueue = Vector.<Notification>([notification]);
+			notificationsQueue = [notification];
 			
 			// the queue can be replenished while a notification is processed
 			for (var i:int = 0;i < notificationsQueue.length;i++)
@@ -263,7 +263,7 @@ package ru.whitered.kote
 			const controller:Controller = controllers[notificationType];
 			if(controller && !controller.execute(notification, handleNotification)) return;
 			
-			const subscribedMediators:Vector.<Mediator> = mediatorsMap[notificationType];
+			const subscribedMediators:Array = mediatorsMap[notificationType];
 			if(!subscribedMediators) return;
 			
 			for (var i:int = 0;i < subscribedMediators.length;i++)

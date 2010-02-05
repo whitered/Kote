@@ -7,7 +7,7 @@ package ru.whitered.kote
 	 */
 	internal final class Controller extends Notifier
 	{
-		private const commands:Vector.<Command> = new Vector.<Command>();
+		private const commands:Array = [];
 		private const priorities:Dictionary = new Dictionary();
 		
 		
@@ -69,7 +69,7 @@ package ru.whitered.kote
 		 */
 		public function execute(notification:Notification, notificationListener:Function):Boolean
 		{
-			const snapshot:Vector.<Command> = commands.concat();
+			const snapshot:Array = commands.concat();
 			const commandsLength:int = snapshot.length;
 			
 			var command:Command;

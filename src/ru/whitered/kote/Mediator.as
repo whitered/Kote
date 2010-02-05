@@ -102,9 +102,9 @@ package ru.whitered.kote
 		/**
 		 * @return list of notification types the mediator is subscribed to
 		 */
-		public final function listSubscriptions():Vector.<NotificationType>
+		public final function listSubscriptions():Array
 		{
-			const subscriptions:Vector.<NotificationType> = new Vector.<NotificationType>();
+			const subscriptions:Array = [];
 			for(var s:* in handlers)
 			{
 				subscriptions[subscriptions.length] = NotificationType(s);

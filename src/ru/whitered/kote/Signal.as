@@ -6,7 +6,7 @@ package ru.whitered.kote
 	 */
 	public class Signal 
 	{
-		private var callbacks:Vector.<Function>;
+		private var callbacks:Array;
 		
 		
 		
@@ -16,7 +16,7 @@ package ru.whitered.kote
 		public function dispatch(... args):void
 		{
 			if(!callbacks) return;
-			const snapshot:Vector.<Function> = callbacks.concat();
+			const snapshot:Array = callbacks.concat();
 			const numCallbacks:int = snapshot.length;
 			
 			var i:int;
@@ -52,7 +52,7 @@ package ru.whitered.kote
 			}
 			else
 			{
-				callbacks = Vector.<Function>([callback]);
+				callbacks = [callback];
 			}
 		}
 		
