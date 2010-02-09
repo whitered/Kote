@@ -43,17 +43,18 @@ package ru.whitered.kote
 		 * 
 		 * @param callback
 		 */
-		public function addCallback(callback:Function):void
+		public function addCallback(callback:Function):Boolean
 		{
 			if(callbacks)
 			{
-				if(callbacks.indexOf(callback) >= 0) throw new Error("The listener is already registered");
+				if(callbacks.indexOf(callback) >= 0) return false;
 				callbacks[callbacks.length] = callback;
 			}
 			else
 			{
 				callbacks = Vector.<Function>([callback]);
 			}
+			return true;
 		}
 		
 		
