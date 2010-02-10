@@ -52,7 +52,8 @@
 			<source-path path-element="${src.dir}" />
 			<library-path file="${libs.dir}/flexunit-4.0.0.swc"/>
 			<library-path file="${libs.dir}/flexunit-cilistener-4.0.0.swc"/>
-		</mxmlc>
+			<library-path file="${libs.dir}/hamcrest-1.0.2.swc"/>
+			</mxmlc>
 
 	</target>
 	
@@ -84,7 +85,7 @@
 			<fileset dir="${test.output.reports}">
 				<include name="TEST-*.xml" />
 			</fileset>
-			<report format="frames" todir="${test.output.html}" />
+			<report format="noframes" todir="${test.output.html}" />
 		</junitreport>
 		
 	</target>
