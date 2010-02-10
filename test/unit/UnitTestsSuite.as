@@ -1,5 +1,6 @@
 package unit 
 {
+	import unit.tests.CommandTest;
 	import unit.tests.NotifierTest;
 	import unit.tests.NotificationTest;
 	import unit.tests.SignalTest;
@@ -14,5 +15,6 @@ package unit
 		public var signalTest:SignalTest;
 		public var notificationTest:NotificationTest;
 		public var notifierTest:NotifierTest;
+		public var commandTest:CommandTest;
 	}
 }
