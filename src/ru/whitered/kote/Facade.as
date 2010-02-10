@@ -34,9 +34,9 @@ package ru.whitered.kote
 		 * 
 		 * @param proxy Proxy instance to register
 		 */
-		public function addProxy(proxy:Proxy):void
+		public function addProxy(proxy:Proxy):Boolean
 		{
-			registerNotifier(proxy);
+			return registerNotifier(proxy);
 		}
 
 		
@@ -46,9 +46,9 @@ package ru.whitered.kote
 		 * 
 		 * @param proxy Proxy to remove
 		 */
-		public function removeProxy(proxy:Proxy):void
+		public function removeProxy(proxy:Proxy):Boolean
 		{
-			unregisterNotifier(proxy);
+			return unregisterNotifier(proxy);
 		}
 
 		
@@ -75,9 +75,9 @@ package ru.whitered.kote
 		 * 
 		 * @param mediator
 		 */
-		public function addMediator(mediator:Mediator):void
+		public function addMediator(mediator:Mediator):Boolean
 		{
-			if(!registerNotifier(mediator)) return;
+			if(!registerNotifier(mediator)) return false;
 			
 			const subscriptions:Vector.<NotificationType> = mediator.listSubscriptions();
 			const subscriptionsLength:int = subscriptions.length;
@@ -91,6 +91,8 @@ package ru.whitered.kote
 			mediator.onUnsubscribe.addCallback(unsubscribeMediator);
 			
 			mediator.onAdd.dispatch(mediator, this);
+			
+			return true;
 		}
 
 		
@@ -100,9 +102,9 @@ package ru.whitered.kote
 		 * 
 		 * @param mediator
 		 */
-		public function removeMediator(mediator:Mediator):void
+		public function removeMediator(mediator:Mediator):Boolean
 		{
-			if(!unregisterNotifier(mediator)) return;
+			if(!unregisterNotifier(mediator)) return false;
 			
 			const subscriptions:Vector.<NotificationType> = mediator.listSubscriptions();
 			const subscriptionsLength:int = subscriptions.length;
@@ -116,6 +118,8 @@ package ru.whitered.kote
 			mediator.onSubscribe.removeCallback(subscribeMediator);
 			
 			mediator.onRemove.dispatch(mediator, this);
+			
+			return true;
 		}
 
 		
@@ -169,10 +173,10 @@ package ru.whitered.kote
 		 * @param command 
 		 * @param priority Priority of the command. Commands with a higher priority will be executed first
 		 */
-		public function addCommand(notificationType:NotificationType, command:Command, priority:int = 0):void
+		public function addCommand(notificationType:NotificationType, command:Command, priority:int = 0):Boolean
 		{
 			const controller:Controller = controllers[notificationType] ||= new Controller();
-			controller.addCommand(command, priority);
+			return controller.addCommand(command, priority);
 		}
 
 		
@@ -183,13 +187,18 @@ package ru.whitered.kote
 		 * @param notificationType
 		 * @param command
 		 */
-		public function removeCommand(notificationType:NotificationType, command:Command):void
+		public function removeCommand(notificationType:NotificationType, command:Command):Boolean
 		{
 			const controller:Controller = controllers[notificationType];
-			if(controller && controller.removeCommand(command) && controller.isEmpty())
+			if(controller && controller.removeCommand(command))
 			{
-				// if the last command of the controller was removed
-				delete controllers[notificationType];
+				// if the last command of the controller was removed:
+				if(controller.isEmpty()) delete controllers[notificationType];
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 
