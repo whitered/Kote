@@ -1,5 +1,6 @@
 package unit 
 {
+	import unit.tests.NotificationTest;
 	import unit.tests.SignalTest;
 
 	/**
@@ -10,5 +11,6 @@ package unit
 	public class UnitTestsSuite 
 	{
 		public var signalTest:SignalTest;
+		public var notificationTest:NotificationTest;
 	}
 }
