@@ -1,5 +1,6 @@
 package unit 
 {
+	import unit.tests.FacadeTest;
 	import unit.tests.MediatorTest;
 	import unit.tests.CommandTest;
 	import unit.tests.NotifierTest;
@@ -18,5 +19,6 @@ package unit
 		public var notifierTest:NotifierTest;
 		public var commandTest:CommandTest;
 		public var mediatorTest:MediatorTest;
+		public var facadeTest:FacadeTest;
 	}
 }
