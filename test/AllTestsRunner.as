@@ -1,6 +1,7 @@
 package  
 {
-	import unit.UnitTestsSuite;
+	import integration.IntegrationTestSuite;
+	import unit.UnitTestSuite;
 
 	import org.flexunit.listeners.CIListener;
 	import org.flexunit.runner.FlexUnitCore;
@@ -17,7 +18,7 @@ package
 		{
 			const core:FlexUnitCore = new FlexUnitCore();
 			core.addListener(new CIListener());
-			core.run(UnitTestsSuite);
+			core.run(UnitTestSuite, IntegrationTestSuite);
 		}
 	}
 }

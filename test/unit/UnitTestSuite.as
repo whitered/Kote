@@ -12,7 +12,7 @@ package unit
 	 */
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")] 
-	public class UnitTestsSuite 
+	public class UnitTestSuite 
 	{
 		public var signalTest:SignalTest;
 		public var notificationTest:NotificationTest;
