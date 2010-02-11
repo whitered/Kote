@@ -52,6 +52,7 @@
 		
 		<mxmlc output="${test.output.bin}" file="${test.entry_class}">
 			<source-path path-element="${src.dir}" />
+			<define name="CONFIG::cilistener" value="true" />
 			<library-path file="${libs.dir}/flexunit-4.0.0.swc"/>
 			<library-path file="${libs.dir}/flexunit-cilistener-4.0.0.swc"/>
 			<library-path file="${libs.dir}/hamcrest-1.0.2.swc"/>

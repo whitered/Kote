@@ -1,13 +1,21 @@
 package  
 {
 	import integration.IntegrationTestSuite;
+
 	import unit.UnitTestSuite;
 
-	import org.flexunit.listeners.CIListener;
+	import org.flexunit.internals.TraceListener;
 	import org.flexunit.runner.FlexUnitCore;
 
 	import flash.display.Sprite;
-
+	
+	/*FDT_IGNORE*//* begin */
+	CONFIG::cilistener {
+		import org.flexunit.listeners.CIListener;
+	}
+	/*FDT_IGNORE*//* end */
+	
+	
 	/**
 	 * @author whitered
 	 */
@@ -17,7 +25,14 @@ package
 		public function AllTestsRunner() 
 		{
 			const core:FlexUnitCore = new FlexUnitCore();
-			core.addListener(new CIListener());
+			
+			/*FDT_IGNORE*//* begin */
+			CONFIG::cilistener {
+				core.addListener(new CIListener());
+			}
+			/*FDT_IGNORE*//* end */
+			
+			core.addListener(new TraceListener());
 			core.run(UnitTestSuite, IntegrationTestSuite);
 		}
 	}
