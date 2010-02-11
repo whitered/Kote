@@ -7,6 +7,7 @@
 
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="output.swc" value="${basedir}/bin/kote.swc" />
+	<property name="doc.dir" value="${basedir}/doc" />
 	
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 	
@@ -18,6 +19,7 @@
 	<property name="test.output.bin" location="${test.output.dir}/test.swf" />
 	<property name="test.output.reports" location="${test.output.dir}/reports" />
 	<property name="test.output.html" location="${test.output.dir}/html" />
+	
 	
 	
 	
@@ -88,6 +90,14 @@
 			<report format="noframes" todir="${test.output.html}" />
 		</junitreport>
 		
+	</target>
+	
+	
+	
+	<target name="doc" description="Create asdoc documentation">
+		<asdoc output="${doc.dir}" main-title="${ant.project.name} Documentation">
+			<doc-sources path-element="${src.dir}"/> 
+		</asdoc>
 	</target>
 	
 </project>
