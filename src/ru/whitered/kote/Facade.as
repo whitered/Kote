@@ -266,13 +266,13 @@ package ru.whitered.kote
 		 */
 		private function processNotification(notificationObject:NotificationObject):void
 		{
-			const notificationType:Notification = notificationObject.notification;
+			const notification:Notification = notificationObject.notification;
 			
 			// execute commands and abort if one of them returned 'false':
-			const controller:Controller = controllers[notificationType];
+			const controller:Controller = controllers[notification];
 			if(controller && !controller.execute(notificationObject, handleNotification)) return;
 			
-			const subscribedMediators:Vector.<Mediator> = mediatorsMap[notificationType];
+			const subscribedMediators:Vector.<Mediator> = mediatorsMap[notification];
 			if(!subscribedMediators) return;
 			
 			for (var i:int = 0;i < subscribedMediators.length;i++)
