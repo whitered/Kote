@@ -14,7 +14,7 @@ package unit.tests
 	 */
 	public class FacadeTest 
 	{
-		private const notificationType:Notification = new Notification();
+		private const notification:Notification = new Notification();
 		
 		private var facade:Facade;
 		private var proxy:Proxy;
@@ -144,7 +144,7 @@ package unit.tests
 		[Test]
 		public function add_command():void
 		{
-			assertTrue(facade.addCommand(notificationType, command));
+			assertTrue(facade.addCommand(notification, command));
 		}
 		
 		
@@ -152,8 +152,8 @@ package unit.tests
 		[Test]
 		public function do_not_add_command_for_same_notification_twice():void
 		{
-			assertTrue(facade.addCommand(notificationType, command));
-			assertFalse(facade.addCommand(notificationType, command));
+			assertTrue(facade.addCommand(notification, command));
+			assertFalse(facade.addCommand(notification, command));
 		}
 		
 		
@@ -162,8 +162,8 @@ package unit.tests
 		[Test]
 		public function remove_command():void
 		{
-			facade.addCommand(notificationType, command);
-			assertTrue(facade.removeCommand(notificationType, command));
+			facade.addCommand(notification, command);
+			assertTrue(facade.removeCommand(notification, command));
 		}
 		
 		
@@ -172,8 +172,8 @@ package unit.tests
 		[Test]
 		public function do_not_remove_unregistered_command():void
 		{
-			facade.addCommand(notificationType, command);
-			assertFalse(facade.removeCommand(notificationType, new Command()));
+			facade.addCommand(notification, command);
+			assertFalse(facade.removeCommand(notification, new Command()));
 		}
 		
 		
@@ -181,7 +181,7 @@ package unit.tests
 		[Test]
 		public function do_not_remove_command_with_wrong_notification():void
 		{
-			facade.addCommand(notificationType, command);
+			facade.addCommand(notification, command);
 			assertFalse(facade.removeCommand(new Notification(), command));
 		}
 		

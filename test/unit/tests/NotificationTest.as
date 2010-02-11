@@ -12,14 +12,14 @@ package unit.tests
 	 */
 	public class NotificationTest 
 	{
-		private const notificationType:Notification = new Notification("cool notification name");
+		private const notification:Notification = new Notification("cool notification name");
 		
 		
 		
 		[Test]
 		public function notification_type_has_name():void
 		{
-			assertEquals("cool notification name", notificationType.name);
+			assertEquals("cool notification name", notification.name);
 		}
 		
 		
@@ -29,14 +29,14 @@ package unit.tests
 		{
 			const facade:Facade = new Facade();
 			const params:Array = [1, "string", facade];
-			const notification:NotificationObject = new NotificationObject(facade, notificationType, params);
+			const notificationObject:NotificationObject = new NotificationObject(facade, notification, params);
 			
-			assertStrictlyEquals(facade, notification.facade);
-			assertStrictlyEquals(notificationType, notification.notification);
-			assertEquals(3, notification.parameters.length);
-			assertEquals(1, notification.parameters[0]);
-			assertEquals("string", notification.parameters[1]);
-			assertStrictlyEquals(facade, notification.parameters[2]);
+			assertStrictlyEquals(facade, notificationObject.facade);
+			assertStrictlyEquals(notification, notificationObject.notification);
+			assertEquals(3, notificationObject.parameters.length);
+			assertEquals(1, notificationObject.parameters[0]);
+			assertEquals("string", notificationObject.parameters[1]);
+			assertStrictlyEquals(facade, notificationObject.parameters[2]);
 		}
 		
 		
@@ -44,14 +44,14 @@ package unit.tests
 		[Test]
 		public function modify_notification_params():void
 		{
-			const notification:NotificationObject = new NotificationObject(new Facade(), notificationType, null);
+			const notificationObject:NotificationObject = new NotificationObject(new Facade(), notification, null);
 			
-			notification.parameters = [1, 2, 3];
+			notificationObject.parameters = [1, 2, 3];
 			
-			assertEquals(3, notification.parameters.length);
-			assertEquals(1, notification.parameters[0]);
-			assertEquals(2, notification.parameters[1]);
-			assertEquals(3, notification.parameters[2]);
+			assertEquals(3, notificationObject.parameters.length);
+			assertEquals(1, notificationObject.parameters[0]);
+			assertEquals(2, notificationObject.parameters[1]);
+			assertEquals(3, notificationObject.parameters[2]);
 		}
 	}
 }

@@ -24,7 +24,7 @@ package unit.tests
 		
 		private var facade:Facade;
 		private var mediator:CustomMediator;
-		private const notificationType:Notification = new Notification();
+		private const notification:Notification = new Notification();
 
 
 
@@ -69,11 +69,11 @@ package unit.tests
 		[Test]
 		public function dispatch_onSubscribe_signal():void
 		{
-			mediator.subscribe(notificationType);
+			mediator.subscribe(notification);
 			
 			assertEquals(1, totalCallbacksCalled);
 			assertEquals(1, counters[onSubscribe]);
-			assertThat(lastArguments, array(mediator, notificationType));
+			assertThat(lastArguments, array(mediator, notification));
 		}
 
 
@@ -82,12 +82,12 @@ package unit.tests
 		[Test]
 		public function dispatch_onUnsubscribe_signal():void
 		{
-			mediator.subscribe(notificationType);
-			mediator.unsubscribe(notificationType);
+			mediator.subscribe(notification);
+			mediator.unsubscribe(notification);
 			
 			assertEquals(2, totalCallbacksCalled);
 			assertEquals(1, counters[onUnsubscribe]);
-			assertThat(lastArguments, array(mediator, notificationType));
+			assertThat(lastArguments, array(mediator, notification));
 		}
 
 
@@ -121,10 +121,10 @@ package unit.tests
 		[Test]
 		public function subscribe_with_default_hanler():void
 		{
-			var result:Boolean = mediator.subscribe(notificationType);
+			var result:Boolean = mediator.subscribe(notification);
 			
 			assertTrue(result);
-			assertEquals(notificationType, mediator.listSubscriptions()[0]);
+			assertEquals(notification, mediator.listSubscriptions()[0]);
 		}
 		
 		
@@ -132,10 +132,10 @@ package unit.tests
 		[Test]
 		public function subscribe_with_custom_handler():void
 		{
-			var result:Boolean = mediator.subscribe(notificationType, mediator.handleObject);
+			var result:Boolean = mediator.subscribe(notification, mediator.handleObject);
 			
 			assertTrue(result);
-			assertEquals(notificationType, mediator.listSubscriptions()[0]);
+			assertEquals(notification, mediator.listSubscriptions()[0]);
 		}
 		
 		
@@ -143,8 +143,8 @@ package unit.tests
 		[Test]
 		public function do_not_subscribe_twice_for_the_same_notification():void
 		{
-			assertTrue(mediator.subscribe(notificationType));
-			assertFalse(mediator.subscribe(notificationType, mediator.handleObject));
+			assertTrue(mediator.subscribe(notification));
+			assertFalse(mediator.subscribe(notification, mediator.handleObject));
 			
 			assertEquals(1, mediator.listSubscriptions().length);
 		}
@@ -154,8 +154,8 @@ package unit.tests
 		[Test]
 		public function unsubscribe():void
 		{
-			mediator.subscribe(notificationType);
-			var result:Boolean = mediator.unsubscribe(notificationType);
+			mediator.subscribe(notification);
+			var result:Boolean = mediator.unsubscribe(notification);
 			
 			assertTrue(result);
 			assertEquals(0, mediator.listSubscriptions().length);
@@ -166,7 +166,7 @@ package unit.tests
 		[Test]
 		public function unsubscribe_returns_false_if_not_subscribed():void
 		{
-			assertFalse(mediator.unsubscribe(notificationType));
+			assertFalse(mediator.unsubscribe(notification));
 		}
 		
 		
@@ -174,18 +174,18 @@ package unit.tests
 		[Test]
 		public function list_subscriptions():void
 		{
-			const type1:Notification = new Notification("type 1");
-			const type2:Notification = new Notification("type 2");
-			const type3:Notification = new Notification("type 3");
+			const note1:Notification = new Notification("note 1");
+			const note2:Notification = new Notification("note 2");
+			const note3:Notification = new Notification("note 3");
 			
-			mediator.subscribe(type1);
-			mediator.subscribe(type2);
-			mediator.subscribe(type3);
+			mediator.subscribe(note1);
+			mediator.subscribe(note2);
+			mediator.subscribe(note3);
 			
 			assertEquals(3, mediator.listSubscriptions().length);
-			assertTrue(mediator.listSubscriptions().indexOf(type1) >= 0);
-			assertTrue(mediator.listSubscriptions().indexOf(type2) >= 0);
-			assertTrue(mediator.listSubscriptions().indexOf(type3) >= 0);
+			assertTrue(mediator.listSubscriptions().indexOf(note1) >= 0);
+			assertTrue(mediator.listSubscriptions().indexOf(note2) >= 0);
+			assertTrue(mediator.listSubscriptions().indexOf(note3) >= 0);
 		}
 		
 		
@@ -193,16 +193,16 @@ package unit.tests
 		[Test]
 		public function handleNotifications_calls_handlers():void
 		{
-			const type1:Notification = new Notification();
-			const type2:Notification = new Notification();
+			const note1:Notification = new Notification();
+			const note2:Notification = new Notification();
 			
-			mediator.subscribe(type1);
-			mediator.subscribe(type2, mediator.handleObject);
+			mediator.subscribe(note1);
+			mediator.subscribe(note2, mediator.handleObject);
 			
 			facade.addMediator(mediator);
 			
-			facade.sendNotification(type1);
-			facade.sendNotification(type2, {});
+			facade.sendNotification(note1);
+			facade.sendNotification(note2, {});
 			
 			assertEquals(1, mediator.customHandlerCounter);
 			assertEquals(2, mediator.allHandlersCounter);
@@ -213,12 +213,12 @@ package unit.tests
 		[Test]
 		public function mediator_custom_handler_accepts_notification_parameters_as_arguments():void
 		{
-			mediator.subscribe(notificationType, mediator.handleObject);
+			mediator.subscribe(notification, mediator.handleObject);
 			
 			const object:Object = {}; 
 			
 			facade.addMediator(mediator);
-			facade.sendNotification(notificationType, object);
+			facade.sendNotification(notification, object);
 			
 			assertStrictlyEquals(object, mediator.receivedObject);
 		}
@@ -279,9 +279,9 @@ class CustomMediator extends Mediator
 
 	
 	
-	override public function handleNotification(notification:NotificationObject):void 
+	override public function handleNotification(notificationObject:NotificationObject):void 
 	{
-		super.handleNotification(notification);
+		super.handleNotification(notificationObject);
 		allHandlersCounter++;
 	}
 
