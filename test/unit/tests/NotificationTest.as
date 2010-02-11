@@ -1,8 +1,8 @@
 package unit.tests 
 {
 	import ru.whitered.kote.Facade;
+	import ru.whitered.kote.NotificationObject;
 	import ru.whitered.kote.Notification;
-	import ru.whitered.kote.NotificationType;
 
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.asserts.assertStrictlyEquals;
@@ -12,7 +12,7 @@ package unit.tests
 	 */
 	public class NotificationTest 
 	{
-		private const notificationType:NotificationType = new NotificationType("cool notification name");
+		private const notificationType:Notification = new Notification("cool notification name");
 		
 		
 		
@@ -29,10 +29,10 @@ package unit.tests
 		{
 			const facade:Facade = new Facade();
 			const params:Array = [1, "string", facade];
-			const notification:Notification = new Notification(facade, notificationType, params);
+			const notification:NotificationObject = new NotificationObject(facade, notificationType, params);
 			
 			assertStrictlyEquals(facade, notification.facade);
-			assertStrictlyEquals(notificationType, notification.type);
+			assertStrictlyEquals(notificationType, notification.notification);
 			assertEquals(3, notification.parameters.length);
 			assertEquals(1, notification.parameters[0]);
 			assertEquals("string", notification.parameters[1]);
@@ -44,7 +44,7 @@ package unit.tests
 		[Test]
 		public function modify_notification_params():void
 		{
-			const notification:Notification = new Notification(new Facade(), notificationType, null);
+			const notification:NotificationObject = new NotificationObject(new Facade(), notificationType, null);
 			
 			notification.parameters = [1, 2, 3];
 			

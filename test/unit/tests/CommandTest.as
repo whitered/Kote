@@ -1,8 +1,8 @@
 package unit.tests 
 {
 	import ru.whitered.kote.Facade;
+	import ru.whitered.kote.NotificationObject;
 	import ru.whitered.kote.Notification;
-	import ru.whitered.kote.NotificationType;
 
 	import org.flexunit.asserts.assertTrue;
 
@@ -17,7 +17,7 @@ package unit.tests
 		{
 			const command:CustomCommand = new CustomCommand();
 			const object:Object = {};
-			const result:Boolean = command.execute(new Notification(new Facade(), new NotificationType(), [object]));
+			const result:Boolean = command.execute(new NotificationObject(new Facade(), new Notification(), [object]));
 			
 			assertTrue(result);
 			assertTrue(object.processed);

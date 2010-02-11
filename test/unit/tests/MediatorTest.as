@@ -2,7 +2,7 @@ package unit.tests
 {
 	import ru.whitered.kote.Facade;
 	import ru.whitered.kote.Mediator;
-	import ru.whitered.kote.NotificationType;
+	import ru.whitered.kote.Notification;
 
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.asserts.assertFalse;
@@ -24,7 +24,7 @@ package unit.tests
 		
 		private var facade:Facade;
 		private var mediator:CustomMediator;
-		private const notificationType:NotificationType = new NotificationType();
+		private const notificationType:Notification = new Notification();
 
 
 
@@ -174,9 +174,9 @@ package unit.tests
 		[Test]
 		public function list_subscriptions():void
 		{
-			const type1:NotificationType = new NotificationType("type 1");
-			const type2:NotificationType = new NotificationType("type 2");
-			const type3:NotificationType = new NotificationType("type 3");
+			const type1:Notification = new Notification("type 1");
+			const type2:Notification = new Notification("type 2");
+			const type3:Notification = new Notification("type 3");
 			
 			mediator.subscribe(type1);
 			mediator.subscribe(type2);
@@ -193,8 +193,8 @@ package unit.tests
 		[Test]
 		public function handleNotifications_calls_handlers():void
 		{
-			const type1:NotificationType = new NotificationType();
-			const type2:NotificationType = new NotificationType();
+			const type1:Notification = new Notification();
+			const type2:Notification = new Notification();
 			
 			mediator.subscribe(type1);
 			mediator.subscribe(type2, mediator.handleObject);
@@ -229,7 +229,7 @@ package unit.tests
 		// callbacks
 		//----------------------------------------------------------------------
 		
-		private function onSubscribe(mediator:Mediator, notificationType:NotificationType):void
+		private function onSubscribe(mediator:Mediator, notificationType:Notification):void
 		{
 			counters[onSubscribe]++;
 			totalCallbacksCalled++;
@@ -238,7 +238,7 @@ package unit.tests
 		
 		
 		
-		private function onUnsubscribe(mediator:Mediator, notificationType:NotificationType):void
+		private function onUnsubscribe(mediator:Mediator, notificationType:Notification):void
 		{
 			counters[onUnsubscribe]++;
 			totalCallbacksCalled++;
@@ -266,7 +266,7 @@ package unit.tests
 }
 
 import ru.whitered.kote.Mediator;
-import ru.whitered.kote.Notification;
+import ru.whitered.kote.NotificationObject;
 
 
 
@@ -279,7 +279,7 @@ class CustomMediator extends Mediator
 
 	
 	
-	override public function handleNotification(notification:Notification):void 
+	override public function handleNotification(notification:NotificationObject):void 
 	{
 		super.handleNotification(notification);
 		allHandlersCounter++;

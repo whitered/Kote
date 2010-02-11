@@ -13,7 +13,7 @@ package ru.whitered.kote
 		 * <p>Signal has arguments:</p>
 		 * <ul>
 		 * <li><code>mediator:Mediator</code> - current mediator</li>
-		 * <li><code>notificationType:NotificationType</code> - notification for which the mediator was subscribed</li>
+		 * <li><code>notification:Notification</code> - notification for which the mediator was subscribed</li>
 		 * </ul>
 		 */
 		public const onSubscribe:Signal = new Signal();
@@ -24,7 +24,7 @@ package ru.whitered.kote
 		 * <p>Signal has arguments:</p>
 		 * <ul>
 		 * <li><code>mediator:Mediator</code> - current mediator</li>
-		 * <li><code>notificationType:NotificationType</code> - notification from which the mediator was unsubscribed</li>
+		 * <li><code>notification:Notification</code> - notification from which the mediator was unsubscribed</li>
 		 * </ul>
 		 */
 		public const onUnsubscribe:Signal = new Signal();
@@ -57,7 +57,7 @@ package ru.whitered.kote
 		
 		
 		/**
-		 * Subscribes the mediator for specified notification type
+		 * Subscribes the mediator for specified notification 
 		 * 
 		 * <p>Handler method should accept the same parameters types 
 		 * as was specified on notification creation</p>
@@ -65,49 +65,49 @@ package ru.whitered.kote
 		 * <p>If handler is not specified, notification still can be handled 
 		 * by the handleNotification() method</p>
 		 * 
-		 * @param notificationType
+		 * @param notification
 		 * @param handler shortcut method that will be invoked on the notification
 		 * 
 		 * @return <code>true</code> if successfully subscribed; <code>false</code> if there is a subscription for given notification type already
 		 * 
 		 * @see #handleNotification() 
 		 */
-		public function subscribe(notificationType:NotificationType, handler:Function = null):Boolean
+		public function subscribe(notification:Notification, handler:Function = null):Boolean
 		{
-			if(handlers[notificationType] != null) return false;
-			handlers[notificationType] = handler || true;
-			onSubscribe.dispatch(this, notificationType);
+			if(handlers[notification] != null) return false;
+			handlers[notification] = handler || true;
+			onSubscribe.dispatch(this, notification);
 			return true;
 		}
 		
 		
 		
 		/**
-		 * Unsubscribes the mediator from a notification type
+		 * Unsubscribes the mediator from a notification
 		 * 
-		 * @param notificationType
+		 * @param notification
 		 * 
 		 * @return <code>true</code> if successfully unsubscribed; <code>false</code> if there was no subscription for that notification type
 		 */
-		public function unsubscribe(notificationType:NotificationType):Boolean
+		public function unsubscribe(notification:Notification):Boolean
 		{
-			if(handlers[notificationType] == null) return false;
-			delete handlers[notificationType];
-			onUnsubscribe.dispatch(this, notificationType);
+			if(handlers[notification] == null) return false;
+			delete handlers[notification];
+			onUnsubscribe.dispatch(this, notification);
 			return true;
 		}
 		
 		
 		
 		/**
-		 * @return list of notification types the mediator is subscribed to
+		 * @return list of notifications the mediator is subscribed to
 		 */
-		public final function listSubscriptions():Vector.<NotificationType>
+		public final function listSubscriptions():Vector.<Notification>
 		{
-			const subscriptions:Vector.<NotificationType> = new Vector.<NotificationType>();
+			const subscriptions:Vector.<Notification> = new Vector.<Notification>();
 			for(var s:* in handlers)
 			{
-				subscriptions[subscriptions.length] = NotificationType(s);
+				subscriptions[subscriptions.length] = Notification(s);
 			}
 			return subscriptions;
 		}
@@ -120,15 +120,15 @@ package ru.whitered.kote
 		 * <p>Override this method to handle unbinded notifications or to work with 
 		 * notification object itself instead of its parameters</p>
 		 * 
-		 * <p>Don't forget to call <code>super.handleNotification(notification)</code> when overriding</p>
+		 * <p>Don't forget to call <code>super.handleNotification(notificationObject)</code> when overriding</p>
 		 * 
 		 * @param notification Received notification
 		 * 
 		 * @see Notification
 		 */
-		public function handleNotification(notification:Notification):void 
+		public function handleNotification(notificationObject:NotificationObject):void 
 		{
-			if(handlers[notification.type] is Function) handlers[notification.type].apply(this, notification.parameters);
+			if(handlers[notificationObject.notification] is Function) handlers[notificationObject.notification].apply(this, notificationObject.parameters);
 		}
 	}
 }

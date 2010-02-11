@@ -6,7 +6,7 @@ package unit.tests
 	import ru.whitered.kote.Command;
 	import ru.whitered.kote.Facade;
 	import ru.whitered.kote.Mediator;
-	import ru.whitered.kote.NotificationType;
+	import ru.whitered.kote.Notification;
 
 
 	/**
@@ -14,7 +14,7 @@ package unit.tests
 	 */
 	public class FacadeTest 
 	{
-		private const notificationType:NotificationType = new NotificationType();
+		private const notificationType:Notification = new Notification();
 		
 		private var facade:Facade;
 		private var proxy:Proxy;
@@ -182,7 +182,7 @@ package unit.tests
 		public function do_not_remove_command_with_wrong_notification():void
 		{
 			facade.addCommand(notificationType, command);
-			assertFalse(facade.removeCommand(new NotificationType(), command));
+			assertFalse(facade.removeCommand(new Notification(), command));
 		}
 		
 		

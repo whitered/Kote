@@ -24,7 +24,7 @@ package ru.whitered.kote
 		 * 
 		 * @return <code>true</code> to resume notification flow
 		 */
-		public function execute(notification:Notification):Boolean
+		public function execute(notification:NotificationObject):Boolean
 		{
 			if(hasOwnProperty("run") && this["run"] is Function)
 			{
