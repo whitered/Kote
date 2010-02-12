@@ -26,7 +26,7 @@
 	<target name="swc" depends="" description="Compile AS3 code into a SWC">
 		<echo>Using Flex SDK at: ${FLEX_HOME}</echo>
 
-		<compc output="${output.swc}">
+		<compc output="${output.swc}" target-player="9">
 			<source-path path-element="${src.dir}"/>
 			<include-sources dir="${src.dir}" includes="**/*.as"/>
 		</compc>
@@ -50,7 +50,7 @@
 
 		<delete file="${test.output.bin}" />
 		
-		<mxmlc output="${test.output.bin}" file="${test.entry_class}">
+		<mxmlc output="${test.output.bin}" file="${test.entry_class}" target-player="9">
 			<source-path path-element="${src.dir}" />
 			<define name="CONFIG::cilistener" value="true" />
 			<library-path file="${libs.dir}/flexunit-4.0.0.swc"/>
