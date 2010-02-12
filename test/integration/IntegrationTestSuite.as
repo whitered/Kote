@@ -1,5 +1,6 @@
 package integration 
 {
+	import integration.tests.NotificationQueueTest;
 	import integration.tests.CommandPriorityTest;
 
 	/**
@@ -9,6 +10,7 @@ package integration
 	[RunWith("org.flexunit.runners.Suite")] 
 	public class IntegrationTestSuite 
 	{
-		public var testCommandPriority:CommandPriorityTest;
+		public var commandPriorityTest:CommandPriorityTest;
+		public var notificationQueueTest:NotificationQueueTest;
 	}
 }
