@@ -104,16 +104,16 @@ p. To listen for a singnal just add listener for it:
 
 bc.. public function ChatLogMediator()
 {
-  onSubscribe.addListener(handleSubscribe);
-  onRemove.addListener(handleRemove);
+  onSubscribe.addCallback(handleSubscribe);
+  onRemove.addCallback(handleRemove);
 }
 
-private function handleSubscribe(mediator:Mediator, notificationType:NotificationType):void
+private function handleSubscribe(mediator:Mediator, notification:Notification):void
 {
-  trace("Mediator has subscribed for", notificationType);
+  trace("Mediator has subscribed for", notification);
 }
 
-private function handleRemove(facade:Facade):void
+private function handleRemove(mediator:Mediator, facade:Facade):void
 {
   trace("Mediator was removed from facade", facade);
 }
