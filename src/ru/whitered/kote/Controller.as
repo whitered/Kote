@@ -67,7 +67,7 @@ package ru.whitered.kote
 		 * 
 		 * @return false if one of the commands aborted
 		 */
-		public function execute(notification:Notification, notificationListener:Function):Boolean
+		public function execute(notificationObject:NotificationObject, notificationListener:Function):Boolean
 		{
 			const snapshot:Array = commands.concat();
 			const commandsLength:int = snapshot.length;
@@ -79,7 +79,7 @@ package ru.whitered.kote
 			{
 				command = snapshot[i];
 				command.onNotification.addCallback(notificationListener);
-				result = command.execute(notification);
+				result = command.execute(notificationObject);
 				command.onNotification.removeCallback(notificationListener);
 				if(!result) return false;
 			}

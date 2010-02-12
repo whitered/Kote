@@ -34,9 +34,9 @@ package ru.whitered.kote
 		 * 
 		 * @param proxy Proxy instance to register
 		 */
-		public function addProxy(proxy:Proxy):void
+		public function addProxy(proxy:Proxy):Boolean
 		{
-			registerNotifier(proxy);
+			return registerNotifier(proxy);
 		}
 
 		
@@ -46,9 +46,9 @@ package ru.whitered.kote
 		 * 
 		 * @param proxy Proxy to remove
 		 */
-		public function removeProxy(proxy:Proxy):void
+		public function removeProxy(proxy:Proxy):Boolean
 		{
-			unregisterNotifier(proxy);
+			return unregisterNotifier(proxy);
 		}
 
 		
@@ -75,9 +75,9 @@ package ru.whitered.kote
 		 * 
 		 * @param mediator
 		 */
-		public function addMediator(mediator:Mediator):void
+		public function addMediator(mediator:Mediator):Boolean
 		{
-			if(!registerNotifier(mediator)) return;
+			if(!registerNotifier(mediator)) return false;
 			
 			const subscriptions:Array = mediator.listSubscriptions();
 			const subscriptionsLength:int = subscriptions.length;
@@ -91,6 +91,8 @@ package ru.whitered.kote
 			mediator.onUnsubscribe.addCallback(unsubscribeMediator);
 			
 			mediator.onAdd.dispatch(mediator, this);
+			
+			return true;
 		}
 
 		
@@ -100,9 +102,9 @@ package ru.whitered.kote
 		 * 
 		 * @param mediator
 		 */
-		public function removeMediator(mediator:Mediator):void
+		public function removeMediator(mediator:Mediator):Boolean
 		{
-			if(!unregisterNotifier(mediator)) return;
+			if(!unregisterNotifier(mediator)) return false;
 			
 			const subscriptions:Array = mediator.listSubscriptions();
 			const subscriptionsLength:int = subscriptions.length;
@@ -116,6 +118,8 @@ package ru.whitered.kote
 			mediator.onSubscribe.removeCallback(subscribeMediator);
 			
 			mediator.onRemove.dispatch(mediator, this);
+			
+			return true;
 		}
 
 		
@@ -135,10 +139,10 @@ package ru.whitered.kote
 		/**
 		 * @private
 		 */
-		private function subscribeMediator(mediator:Mediator, notificationType:NotificationType):void 
+		private function subscribeMediator(mediator:Mediator, notification:Notification):void 
 		{
-			mediatorsMap[notificationType] ||= [];
-			mediatorsMap[notificationType].push(mediator);
+			mediatorsMap[notification] ||= [];
+			mediatorsMap[notification].push(mediator);
 		}
 
 		
@@ -146,14 +150,14 @@ package ru.whitered.kote
 		/**
 		 * @private
 		 */
-		private function unsubscribeMediator(mediator:Mediator, notificationType:NotificationType):void 
+		private function unsubscribeMediator(mediator:Mediator, notification:Notification):void 
 		{
-			if(mediatorsMap[notificationType] == null) return;
-			const subscribedMediators:Array = mediatorsMap[notificationType];
+			if(mediatorsMap[notification] == null) return;
+			const subscribedMediators:Array = mediatorsMap[notification];
 			const index:int = subscribedMediators.indexOf(mediator);
 			if(index < 0) return;
 			subscribedMediators.splice(index, 1);
-			if(subscribedMediators.length == 0) delete mediatorsMap[notificationType];
+			if(subscribedMediators.length == 0) delete mediatorsMap[notification];
 		}
 
 		
@@ -165,14 +169,14 @@ package ru.whitered.kote
 		/**
 		 * Binds the command to the notification
 		 * 
-		 * @param notificationType Notification type 
+		 * @param notification Notification  
 		 * @param command 
 		 * @param priority Priority of the command. Commands with a higher priority will be executed first
 		 */
-		public function addCommand(notificationType:NotificationType, command:Command, priority:int = 0):void
+		public function addCommand(notification:Notification, command:Command, priority:int = 0):Boolean
 		{
-			const controller:Controller = controllers[notificationType] ||= new Controller();
-			controller.addCommand(command, priority);
+			const controller:Controller = controllers[notification] ||= new Controller();
+			return controller.addCommand(command, priority);
 		}
 
 		
@@ -180,16 +184,21 @@ package ru.whitered.kote
 		/**
 		 * Unbinds the command from the notification
 		 * 
-		 * @param notificationType
+		 * @param notification
 		 * @param command
 		 */
-		public function removeCommand(notificationType:NotificationType, command:Command):void
+		public function removeCommand(notification:Notification, command:Command):Boolean
 		{
-			const controller:Controller = controllers[notificationType];
-			if(controller && controller.removeCommand(command) && controller.isEmpty())
+			const controller:Controller = controllers[notification];
+			if(controller && controller.removeCommand(command))
 			{
-				// if the last command of the controller was removed
-				delete controllers[notificationType];
+				// if the last command of the controller was removed:
+				if(controller.isEmpty()) delete controllers[notification];
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 
@@ -228,18 +237,18 @@ package ru.whitered.kote
 		/**
 		 * @private
 		 */
-		private function handleNotification(notificationType:NotificationType, params:Array):void 
+		private function handleNotification(notification:Notification, params:Array):void 
 		{
-			const notification:Notification = new Notification(this, notificationType, params);
+			const notificationObject:NotificationObject = new NotificationObject(this, notification, params);
 			
 			// if there is a processing notification already:
 			if(notificationsQueue)
 			{
-				notificationsQueue.push(notification);
+				notificationsQueue.push(notificationObject);
 				return;
 			}
 			
-			notificationsQueue = [notification];
+			notificationsQueue = [notificationObject];
 			
 			// the queue can be replenished while a notification is processed
 			for (var i:int = 0;i < notificationsQueue.length;i++)
@@ -255,20 +264,20 @@ package ru.whitered.kote
 		/**
 		 * @private
 		 */
-		private function processNotification(notification:Notification):void
+		private function processNotification(notificationObject:NotificationObject):void
 		{
-			const notificationType:NotificationType = notification.type;
+			const notification:Notification = notificationObject.notification;
 			
 			// execute commands and abort if one of them returned 'false':
-			const controller:Controller = controllers[notificationType];
-			if(controller && !controller.execute(notification, handleNotification)) return;
+			const controller:Controller = controllers[notification];
+			if(controller && !controller.execute(notificationObject, handleNotification)) return;
 			
-			const subscribedMediators:Array = mediatorsMap[notificationType];
+			const subscribedMediators:Array = mediatorsMap[notification];
 			if(!subscribedMediators) return;
 			
 			for (var i:int = 0;i < subscribedMediators.length;i++)
 			{
-				subscribedMediators[i].handleNotification(notification);
+				subscribedMediators[i].handleNotification(notificationObject);
 			}
 		}
 	}

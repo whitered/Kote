@@ -16,12 +16,12 @@ package ru.whitered.kote
 		/**
 		 * Send notification
 		 * 
-		 * @param type Notification type
+		 * @param notification Notification type
 		 * @param args Notification parameters
 		 */
-		public function sendNotification(type:NotificationType, ... args):void
+		public function sendNotification(notification:Notification, ... args):void
 		{
-			onNotification.dispatch(type, args);
+			onNotification.dispatch(notification, args);
 		}
 	}
 }

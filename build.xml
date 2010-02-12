@@ -7,8 +7,19 @@
 
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="output.swc" value="${basedir}/bin/kote.swc" />
+	<property name="doc.dir" value="${basedir}/doc" />
 	
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	
+	<property name="libs.dir" location="${basedir}/libs" />
+	
+	<property name="test.src_dir" location="${basedir}/test" />
+	<property name="test.entry_class" location="${test.src_dir}/AllTestsRunner.as" />
+	<property name="test.output.dir" location="${basedir}/test-report" />
+	<property name="test.output.bin" location="${test.output.dir}/test.swf" />
+	<property name="test.output.reports" location="${test.output.dir}/reports" />
+	<property name="test.output.html" location="${test.output.dir}/html" />
+	
 	
 	
 	
@@ -22,6 +33,73 @@
 		
 	</target>
 	
+	
+	
+	<target name="test" depends="test.compile, test.run" description="Compile and run tests"/>
+	
+
+	
+	<target name="test.clean_reports">
+		<delete dir="${test.output.reports}"/>
+		<delete dir="${test.output.html}"/>
+	</target>
+	
+	
+	
+	<target name="test.compile" depends="test.clean_reports">
+
+		<delete file="${test.output.bin}" />
+		
+		<mxmlc output="${test.output.bin}" file="${test.entry_class}">
+			<source-path path-element="${src.dir}" />
+			<define name="CONFIG::cilistener" value="true" />
+			<library-path file="${libs.dir}/flexunit-4.0.0.swc"/>
+			<library-path file="${libs.dir}/flexunit-cilistener-4.0.0.swc"/>
+			<library-path file="${libs.dir}/hamcrest-1.0.2.swc"/>
+			</mxmlc>
+
+	</target>
+	
+	
+	
+	<target name="test.run" description="Run precomiled tests" depends="test.clean_reports">
+		
+		<fail message="Tests are not compiled yet. Run 'ant test.compile' first.">
+			<condition>
+				<not>
+					<available file="${test.output.bin}" />
+				</not>
+			</condition>
+		</fail>
+		
+		<mkdir dir="${test.output.reports}"/>
+		<mkdir dir="${test.output.html}"/>
+
+		<taskdef resource="flexUnitTasks.tasks" classpath="${libs.dir}/flexUnitTasks-4.0.0.jar" />
+		
+		<flexunit 
+			swf="${test.output.bin}" 
+			toDir="${test.output.reports}" 
+			haltonfailure="false" 
+			verbose="false" 
+			localTrusted="false" />
+
+		<junitreport todir="${test.output.html}">
+			<fileset dir="${test.output.reports}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="noframes" todir="${test.output.html}" />
+		</junitreport>
+		
+	</target>
+	
+	
+	
+	<target name="doc" description="Create asdoc documentation">
+		<asdoc output="${doc.dir}" main-title="${ant.project.name} Documentation">
+			<doc-sources path-element="${src.dir}"/> 
+		</asdoc>
+	</target>
 	
 </project>
 

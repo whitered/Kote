@@ -2,49 +2,41 @@ package ru.whitered.kote
 {
 
 	/**
-	 * @author whitered
+	 * Notification represents an event type in application 
 	 */
-	public final class Notification 
+	public class Notification 
 	{
-		private var _facade:Facade;
-		private var notificationType:NotificationType;
-		private var params:Array;
-
+		private var _name:String;
 		
 		
-		public function Notification(facade:Facade, notificationType:NotificationType, params:Array) 
+		
+		/**
+		 * Create a notification
+		 * 
+		 * @param name Can be useful for debug
+		 */
+		public function Notification(name:String = null) 
 		{
-			this._facade = facade;
-			this.notificationType = notificationType;
-			this.params = params;
+			this._name = name;
 		}
 		
 		
 		
-		public function get facade():Facade
+		/**
+		 * Name of the notification
+		 */
+		public function get name():String
 		{
-			return _facade;
+			return _name;
 		}
 		
 		
 		
-		public function get type():NotificationType
-		{
-			return notificationType;
-		}
-		
-		
-		
-		public function get parameters():Array
-		{
-			return params;
-		}
-		
-		
-		
-		public function set parameters(value:Array):void
-		{
-			params = value;
+		/**
+		 * @return Name specified on creation
+		 */
+		public function toString():String {
+			return name || "[NotificationType]";
 		}
 	}
 }
