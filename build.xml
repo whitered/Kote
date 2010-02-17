@@ -50,7 +50,7 @@
 
 		<delete file="${test.output.bin}" />
 		
-		<mxmlc output="${test.output.bin}" file="${test.entry_class}">
+		<mxmlc output="${test.output.bin}" file="${test.entry_class}" static-link-runtime-shared-libraries="true">
 			<source-path path-element="${src.dir}" />
 			<define name="CONFIG::cilistener" value="true" />
 			<library-path file="${libs.dir}/flexunit-4.0.0.swc"/>
