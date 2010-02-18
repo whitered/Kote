@@ -1,14 +1,15 @@
 package unit.tests 
 {
-	import flash.display.Sprite;
-	import org.flexunit.asserts.fail;
 	import ru.whitered.kote.Signal;
 
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.asserts.assertFalse;
-	import org.flexunit.asserts.assertNotNull;
-	import org.flexunit.asserts.assertStrictlyEquals;
 	import org.flexunit.asserts.assertTrue;
+	import org.flexunit.asserts.fail;
+	import org.hamcrest.assertThat;
+	import org.hamcrest.collection.array;
+
+	import flash.display.Sprite;
 
 	/**
 	 * @author whitered
@@ -17,7 +18,8 @@ package unit.tests
 	{
 		private var signal:Signal;
 		private var counter:int;
-		private var array:Array;
+		private var args:Array;
+		
 
 
 		[Before]
@@ -34,7 +36,7 @@ package unit.tests
 		{
 			signal.removeAllCallbacks();
 			signal = null;
-			array = null;
+			args = null;
 		}
 		
 		
@@ -62,11 +64,7 @@ package unit.tests
 			signal.addCallback(callbackWithArguments);
 			signal.dispatch(5, "string", sprite);
 			
-			assertNotNull(array);
-			assertEquals(3, array.length);
-			assertEquals(5, array[0]);
-			assertEquals("string", array[1]);
-			assertStrictlyEquals(sprite, array[2]);
+			assertThat(args, array(5, "string", sprite));
 		}
 		
 		
@@ -151,30 +149,101 @@ package unit.tests
 			signal.dispatch(3, "text", "this is not a sprite");
 		}
 		
-
 		
 		
+		[Test]
+		public function callback_added_by_another_callback_will_not_be_executed_in_this_time():void
+		{
+			signal.addCallback(callbackThatModifiesCallbacks);
+			signal.dispatch(signal, [callbackThatModifiesCallbacks], [callbackWithCounter]);
+			
+			assertEquals(0, counter);
+			
+			signal.dispatch();
+			
+			assertEquals(1, counter);
+			
+		}
+		
+		
+		[Test]
+		public function callback_removed_by_another_callback_still_will_be_executed_in_this_time():void
+		{
+			signal.addCallback(callbackThatModifiesCallbacks);
+			signal.addCallback(callbackWithCounter);
+			
+			signal.dispatch(signal, [callbackWithCounter], null);
+			
+			assertEquals("CallbackWithCounter was in list on the moment of dispatch()", 1, counter);
+			
+			signal.removeCallback(callbackThatModifiesCallbacks);
+			signal.dispatch();
+			
+			assertEquals("CallbackWithCounter should be removed and signal should contain no callbacks", 1, counter);
+		}
+		
+		
+		
+		[Test]
+		public function redispatch_and_remove_callbacks_do_not_modify_current_callbacks_list():void
+		{
+			var redispatched:Boolean = false;
+			const callback:Function = function():void
+			{
+				if(!redispatched)
+				{
+					redispatched = true;
+					signal.dispatch();
+					signal.removeCallback(callbackWithCounter);
+					signal.addCallback(callbackThatFails);
+				}
+			};
+			signal.addCallback(callback);
+			signal.addCallback(callbackWithCounter);
+			
+			signal.dispatch();
+			
+			assertEquals(2, counter);
+		}
 		//----------------------------------------------------------------------
 		// callbacks
 		//----------------------------------------------------------------------
 		
 		private function callbackWithArguments(num:int, str:String, sprite:Sprite):void 
 		{
-			array = [num, str, sprite];
+			args = [num, str, sprite];
 		}
 
 		
 		
-		private function callbackWithCounter():void
+		private function callbackWithCounter(... args):void
 		{
 			counter++;
 		}
 		
 		
 		
-		private function callbackThatFails():void
+		private function callbackThatFails(... args):void
 		{
 			fail("This callback should not have been called");
+		}
+		
+		
+		
+		private function callbackThatModifiesCallbacks(signal:Signal, callbacksToRemove:Array, callbacksToAdd:Array):void
+		{
+			var callback:Function;
+			
+			for each (callback in callbacksToRemove)
+			{
+				signal.removeCallback(callback);
+			}
+			
+			
+			for each (callback in callbacksToAdd)
+			{
+				signal.addCallback(callback);
+			}
 		}
 	}
 }

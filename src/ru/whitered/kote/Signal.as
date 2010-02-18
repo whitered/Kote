@@ -8,6 +8,8 @@ package ru.whitered.kote
 	{
 		private var callbacks:Array;
 		
+		private var callbacksInUse:Boolean = false;
+		
 		
 		
 		/**
@@ -16,7 +18,17 @@ package ru.whitered.kote
 		public function dispatch(... args):void
 		{
 			if(!callbacks) return;
-			const snapshot:Array = callbacks.concat();
+			
+			if(callbacksInUse)
+			{
+				callbacks = callbacks.slice();
+			}
+			else
+			{
+				callbacksInUse = true;
+			}
+			
+			const snapshot:Array = callbacks;
 			const numCallbacks:int = snapshot.length;
 			
 			var i:int;
@@ -34,6 +46,8 @@ package ru.whitered.kote
 					snapshot[i].apply(null, args);
 				}
 			}
+			
+			callbacksInUse = false;
 		}
 
 		
@@ -45,8 +59,15 @@ package ru.whitered.kote
 		 */
 		public function addCallback(callback:Function):Boolean
 		{
+			
 			if(callbacks)
 			{
+				if(callbacksInUse)
+				{
+					callbacks = callbacks.slice();
+					callbacksInUse = false;
+				}
+				
 				if(callbacks.indexOf(callback) >= 0) return false;
 				callbacks[callbacks.length] = callback;
 			}
@@ -69,6 +90,13 @@ package ru.whitered.kote
 			if(!callbacks) return false;
 			const index:int = callbacks.indexOf(callback);
 			if(index < 0) return false; 
+
+			if(callbacksInUse)
+			{
+				callbacks = callbacks.slice();
+				callbacksInUse = false;
+			}
+				
 			callbacks.splice(index, 1);
 			return true;
 		}
