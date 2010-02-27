@@ -8,21 +8,21 @@
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="output.swc" value="${basedir}/bin/kote.swc" />
 	<property name="doc.dir" value="${basedir}/doc" />
-	
+
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
-	
+
 	<property name="libs.dir" location="${basedir}/libs" />
-	
+
 	<property name="test.src_dir" location="${basedir}/test" />
 	<property name="test.entry_class" location="${test.src_dir}/AllTestsRunner.as" />
 	<property name="test.output.dir" location="${basedir}/test-report" />
 	<property name="test.output.bin" location="${test.output.dir}/test.swf" />
 	<property name="test.output.reports" location="${test.output.dir}/reports" />
 	<property name="test.output.html" location="${test.output.dir}/html" />
-	
-	
-	
-	
+
+
+
+
 	<target name="swc" depends="" description="Compile AS3 code into a SWC">
 		<echo>Using Flex SDK at: ${FLEX_HOME}</echo>
 
@@ -30,26 +30,26 @@
 			<source-path path-element="${src.dir}"/>
 			<include-sources dir="${src.dir}" includes="**/*.as"/>
 		</compc>
-		
-	</target>
-	
-	
-	
-	<target name="test" depends="test.compile, test.run" description="Compile and run tests"/>
-	
 
-	
+	</target>
+
+
+
+	<target name="test" depends="test.compile, test.run" description="Compile and run tests"/>
+
+
+
 	<target name="test.clean_reports">
 		<delete dir="${test.output.reports}"/>
 		<delete dir="${test.output.html}"/>
 	</target>
-	
-	
-	
+
+
+
 	<target name="test.compile" depends="test.clean_reports">
 
 		<delete file="${test.output.bin}" />
-		
+
 		<mxmlc output="${test.output.bin}" file="${test.entry_class}" static-link-runtime-shared-libraries="true">
 			<source-path path-element="${src.dir}" />
 			<define name="CONFIG::cilistener" value="true" />
@@ -59,11 +59,11 @@
 			</mxmlc>
 
 	</target>
-	
-	
-	
+
+
+
 	<target name="test.run" description="Run precomiled tests" depends="test.clean_reports">
-		
+
 		<fail message="Tests are not compiled yet. Run 'ant test.compile' first.">
 			<condition>
 				<not>
@@ -71,17 +71,17 @@
 				</not>
 			</condition>
 		</fail>
-		
+
 		<mkdir dir="${test.output.reports}"/>
 		<mkdir dir="${test.output.html}"/>
 
 		<taskdef resource="flexUnitTasks.tasks" classpath="${libs.dir}/flexUnitTasks-4.0.0.jar" />
-		
-		<flexunit 
-			swf="${test.output.bin}" 
-			toDir="${test.output.reports}" 
-			haltonfailure="false" 
-			verbose="false" 
+
+		<flexunit
+			swf="${test.output.bin}"
+			toDir="${test.output.reports}"
+			haltonfailure="false"
+			verbose="false"
 			localTrusted="false" />
 
 		<junitreport todir="${test.output.html}">
@@ -90,16 +90,24 @@
 			</fileset>
 			<report format="noframes" todir="${test.output.html}" />
 		</junitreport>
-		
+
 	</target>
-	
-	
-	
+
+
+
 	<target name="doc" description="Create asdoc documentation">
 		<asdoc output="${doc.dir}" main-title="${ant.project.name} Documentation">
-			<doc-sources path-element="${src.dir}"/> 
+			<doc-sources path-element="${src.dir}"/>
 		</asdoc>
 	</target>
-	
+
+
+
+	<target name="clean" description="Clean the project directory">
+		<delete file="${output.swc}"/>
+		<delete dir="${doc.dir}"/>
+		<delete dir="${test.output.dir}"/>
+	</target>
+
 </project>
 
