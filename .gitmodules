@@ -1,0 +1,3 @@
+[submodule "libs/signaller"]
+	path = libs/signaller
+	url = git://github.com/whitered/Signaller.git
