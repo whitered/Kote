@@ -1,5 +1,7 @@
 package ru.whitered.kote 
 {
+	import ru.whitered.signaller.Signal;
+	import ru.whitered.signaller.Signaller;
 
 	/**
 	 * Notifier class used as a base for all classes that have to send notifications
@@ -9,8 +11,9 @@ package ru.whitered.kote
 		/**
 		 * Signal that sends notification
 		 */
-		public const onNotification:Signal = new Signal();
-		
+		protected const _onNotification:Signaller = new Signaller();
+		public const onNotification:Signal = _onNotification.signal;
+
 		
 		
 		/**
@@ -21,7 +24,7 @@ package ru.whitered.kote
 		 */
 		public function sendNotification(notification:Notification, ... args):void
 		{
-			onNotification.dispatch(notification, args);
+			_onNotification.dispatch(notification, args);
 		}
 	}
 }

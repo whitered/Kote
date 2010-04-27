@@ -1,5 +1,7 @@
 package ru.whitered.kote 
 {
+	import ru.whitered.signaller.Signal;
+	import ru.whitered.signaller.Signaller;
 	import flash.utils.Dictionary;
 
 	/**
@@ -16,7 +18,8 @@ package ru.whitered.kote
 		 * <li><code>notification:Notification</code> - notification for which the mediator was subscribed</li>
 		 * </ul>
 		 */
-		public const onSubscribe:Signal = new Signal();
+		private const _onSubscribe:Signaller = new Signaller();
+		public const onSubscribe:Signal = _onSubscribe.signal; 
 
 		/**
 		 * Signal <code>onUnsubscribe</code> is dispatched when the mediator is unsubscribed for a notification
@@ -27,8 +30,9 @@ package ru.whitered.kote
 		 * <li><code>notification:Notification</code> - notification from which the mediator was unsubscribed</li>
 		 * </ul>
 		 */
-		public const onUnsubscribe:Signal = new Signal();
-		
+		private const _onUnsubscribe:Signaller = new Signaller();
+		public const onUnsubscribe:Signal = _onUnsubscribe.signal;
+
 		/**
 		 * Signal <code>onAdd</code> is dispatched when the mediator is added to a Facade
 		 * 
@@ -38,7 +42,8 @@ package ru.whitered.kote
 		 * <li><code>mediator:Mediator</code> - current mediator</li>
 		 * </ul>
 		 */
-		public const onAdd:Signal = new Signal();
+		internal const _onAdd:Signaller = new Signaller();
+		public const onAdd:Signal = _onAdd.signal;
 		
 		/**
 		 * Signal <code>onRemove</code> is dispatched when the mediator is removed from a Facade
@@ -49,8 +54,9 @@ package ru.whitered.kote
 		 * <li><code>mediator:Mediator</code> - current mediator</li>
 		 * </ul>
 		 */
-		public const onRemove:Signal = new Signal();
-		
+		internal const _onRemove:Signaller = new Signaller();
+		public const onRemove:Signal = _onRemove.signal;
+
 		
 		private const handlers:Dictionary = new Dictionary();
 		
@@ -76,7 +82,7 @@ package ru.whitered.kote
 		{
 			if(handlers[notification] != null) return false;
 			handlers[notification] = handler || true;
-			onSubscribe.dispatch(this, notification);
+			_onSubscribe.dispatch(this, notification);
 			return true;
 		}
 		
@@ -93,7 +99,7 @@ package ru.whitered.kote
 		{
 			if(handlers[notification] == null) return false;
 			delete handlers[notification];
-			onUnsubscribe.dispatch(this, notification);
+			_onUnsubscribe.dispatch(this, notification);
 			return true;
 		}
 		

@@ -42,10 +42,10 @@ package unit.tests
 			facade = new Facade();
 			mediator = new CustomMediator();
 			
-			mediator.onSubscribe.addCallback(onSubscribe);
-			mediator.onUnsubscribe.addCallback(onUnsubscribe);
-			mediator.onAdd.addCallback(onAdd);
-			mediator.onRemove.addCallback(onRemove);
+			mediator.onSubscribe.add(onSubscribe);
+			mediator.onUnsubscribe.add(onUnsubscribe);
+			mediator.onAdd.add(onAdd);
+			mediator.onRemove.add(onRemove);
 		}
 
 

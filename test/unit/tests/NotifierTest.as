@@ -1,14 +1,13 @@
 package unit.tests 
 {
 	import org.flexunit.asserts.assertEquals;
-	import ru.whitered.kote.Notifier;
 
 	/**
 	 * @author whitered
 	 */
 	public class NotifierTest 
 	{
-		private var notifier:Notifier;
+		private var notifier:MyNotifier;
 		private var counter:int;
 
 		
@@ -16,7 +15,7 @@ package unit.tests
 		[Before]
 		public function setUp():void
 		{
-			notifier = new Notifier();
+			notifier = new MyNotifier();
 			counter = 0;
 		}
 		
@@ -33,8 +32,8 @@ package unit.tests
 		[Test]
 		public function notifier_dispatches_notification():void
 		{
-			notifier.onNotification.addCallback(simpleCallback);
-			notifier.onNotification.dispatch();
+			notifier.onNotification.add(simpleCallback);
+			notifier.notify();
 			assertEquals(1, counter);
 		}
 
@@ -44,5 +43,18 @@ package unit.tests
 		{
 			counter++;
 		}
+	}
+}
+
+import ru.whitered.kote.Notifier;
+
+
+
+
+class MyNotifier extends Notifier
+{
+	public function notify():void
+	{
+		_onNotification.dispatch();
 	}
 }

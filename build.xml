@@ -12,7 +12,9 @@
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
 	<property name="libs.dir" location="${basedir}/libs" />
-
+	
+	<property name="libs.signaller.dir" location="${libs.dir}/signaller" />
+	
 	<property name="test.src_dir" location="${basedir}/test" />
 	<property name="test.entry_class" location="${test.src_dir}/AllTestsRunner.as" />
 	<property name="test.output.dir" location="${basedir}/test-report" />
@@ -28,6 +30,7 @@
 
 		<compc output="${output.swc}">
 			<source-path path-element="${src.dir}"/>
+			<source-path path-element="${libs.signaller.dir}/src"/>
 			<include-sources dir="${src.dir}" includes="**/*.as"/>
 		</compc>
 
@@ -52,6 +55,7 @@
 
 		<mxmlc output="${test.output.bin}" file="${test.entry_class}" static-link-runtime-shared-libraries="true">
 			<source-path path-element="${src.dir}" />
+			<source-path path-element="${libs.signaller.dir}/src"/>
 			<define name="CONFIG::cilistener" value="true" />
 			<library-path file="${libs.dir}/flexunit-4.0.0.swc"/>
 			<library-path file="${libs.dir}/flexunit-cilistener-4.0.0.swc"/>

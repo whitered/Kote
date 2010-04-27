@@ -78,9 +78,9 @@ package ru.whitered.kote
 			for (var i:int = 0;i < commandsLength; i++)
 			{
 				command = snapshot[i];
-				command.onNotification.addCallback(notificationListener);
+				command.onNotification.add(notificationListener);
 				result = command.execute(notificationObject);
-				command.onNotification.removeCallback(notificationListener);
+				command.onNotification.remove(notificationListener);
 				if(!result) return false;
 			}
 			
