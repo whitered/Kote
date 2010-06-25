@@ -2,7 +2,10 @@ require 'sprout'
 
 sprout 'as3'
 
-task :default => 'kote.swc'
+task :default => :build
+
+desc 'Build the swc package'
+task :build => 'kote.swc'
 
 
 
