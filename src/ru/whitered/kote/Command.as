@@ -10,6 +10,10 @@ package ru.whitered.kote
 	 */
 	public class Command extends Notifier 
 	{
+		private var _notificationObject:NotificationObject;
+		
+		
+		
 		/**
 		 * Invokes when the command is executed
 		 * 
@@ -24,13 +28,25 @@ package ru.whitered.kote
 		 * 
 		 * @return <code>true</code> to resume notification flow
 		 */
-		public function execute(notification:NotificationObject):Boolean
+		public function execute(notificationObject:NotificationObject):Boolean
 		{
 			if(hasOwnProperty("run") && this["run"] is Function)
 			{
-				this["run"].apply(this, notification.parameters);
+				_notificationObject = notificationObject;
+				this["run"].apply(this, notificationObject.parameters);
+				_notificationObject = null;
 			}
 			return true;
+		}
+		
+		
+		
+		/**
+		 * notificationObject is only accessible in run() method
+		 */
+		public function get notificationObject():NotificationObject
+		{
+			return _notificationObject;
 		}
 	}
 }
