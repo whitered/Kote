@@ -16,6 +16,6 @@ compc 'kote.swc' do |t|
   t.output = 'bin/kote.swc'
   t.source_path << source_dir
   t.static_link_runtime_shared_libraries = true
-  t.include_classes << Dir.chdir(source_dir) { Dir.glob(File.join('**', '*.as'))}.map { |fn| fn.gsub('.as', '').gsub(File::SEPARATOR, '.') }
+  t.include_classes << Dir.chdir(source_dir) { Dir.glob(File.join('**', '*.as'))}.map { |fn| fn.gsub('.as', '').gsub(File::SEPARATOR, '.') }.join(',')
 end
 
