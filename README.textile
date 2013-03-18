@@ -1,6 +1,5 @@
 *Kote* is a lightweight and easy to use MVC framework for ActionScript and Flex.
 Kote brings together the best features from "PureMVC":http://puremvc.org and "as3-signals":http://github.com/robertpenner/as3-signals
-"Asdoc documentation":http://kote.heroku.com/doc/index.html
 
 h2. Overview
 
